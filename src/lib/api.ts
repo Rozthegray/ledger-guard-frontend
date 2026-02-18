@@ -3,13 +3,7 @@ import axios from "axios";
 // 1. Base URL
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://ledger-guard-backend.onrender.com";
 
-const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-  },
-});
+
 const api = axios.create({
   baseURL: BASE_URL,
   headers: {
