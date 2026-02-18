@@ -33,11 +33,11 @@ api.interceptors.response.use(
       if (typeof window !== "undefined") {
         const path = window.location.pathname;
 
-        // 🟢 FIX: Don't redirect if we are ALREADY on the frontend login page
+        // FIX: Don't redirect if we are ALREADY on the frontend login page
         // This prevents the page from refreshing when you get "Invalid Password"
         if (path !== "/login" && path !== "/signup" && !path.startsWith("/auth")) {
             localStorage.removeItem("token");
-            // 🟢 FIX: Redirect to your frontend login route
+            // FIX: Redirect to your frontend login route
             window.location.href = "/login";
         }
       }
