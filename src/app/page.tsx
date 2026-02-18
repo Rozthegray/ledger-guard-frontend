@@ -239,46 +239,49 @@ export default function LandingPage() {
             </div>
           </motion.div>
 
-          {/* 3D HERO IMAGE WITH BLUR & GLOW */}
-          {/*  FIXED: Increased margin-top for spacing from CTA */}
-          <div className="mt-32 md:mt-40 relative max-w-5xl mx-auto" style={{ perspective: "1000px" }}> 
-            
-            {/* The Neon Glow Behind */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full flex justify-center z-20 pointer-events-none hover:bg-[#a2ff00]">
-  {/* Layer 1: The Atmosphere (Wide & Soft) */}
-  <div className="absolute -top-20 w-[80%] h-[400px] bg-[#B6FF3B]/30 blur-[140px] hover:bg-[#a2ff00] rounded-full"></div>
-  
-  {/* Layer 2: The Core (Tight & Bright) */}
-  <div className="absolute -top-32 w-[60%] h-[250px] bg-[#B6FF3B] blur-[80px] hover:bg-[#a2ff00] rounded-full opacity-80 mix-blend-screen"></div>
+<div className="mt-32 md:mt-40 relative max-w-5xl mx-auto" style={{ perspective: "100px" }}> 
+
+  {/* --- 1. THE NEON GLOW (Now synchronized) --- */}
+  {/* CHANGE: Converted to motion.div and added style={{ opacity }} */}
+  <motion.div 
+    style={{ opacity }} 
+    className="absolute top-10 left-1/2 -translate-x-1/2 w-full flex justify-center z-0 pointer-events-none"
+  >
+    {/* Layer 1: The Atmosphere */}
+    <div className="absolute -top-10 w-[60%] h-[60px] bg-[#B6FF3B]/20 blur-[80px] rounded-t-full"></div>
+    
+    {/* Layer 2: The Core */}
+    <div className="absolute -top-16 w-[40%] h-[80px] bg-[#B6FF3B] blur-[90px] rounded-t-full opacity-50 mix-blend-screen"></div>
+  </motion.div>
+
+  {/* --- 2. THE DASHBOARD IMAGE --- */}
+  <motion.div 
+     initial={{ opacity: 0, rotateX: 25, y: 100, scale: 0.9 }} 
+     whileInView={{ opacity: 1, rotateX: 0, y: 50, scale: 1 }} 
+     viewport={{ once: true, margin: "-100px" }} 
+     transition={{ 
+       duration: 1.4, 
+       type: "spring", 
+       bounce: 0.1, 
+       damping: 20 
+     }}
+     // This opacity value now controls BOTH the image and the glow above
+     style={{ y, opacity }} 
+     className="relative z-10 rounded-2xl border border-white/10 bg-[#1A1F26]/50 p-2 shadow-2xl backdrop-blur-sm"
+  >
+     <Image 
+       src="/dashboard-preview.png" 
+       alt="Ledger Guard Dashboard" 
+       width={1400} 
+       height={900}
+       className="w-full h-auto rounded-xl border border-white/5 shadow-inner"
+       priority
+     />
+
+     {/* The Bottom Fade Mask */}
+     <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-[#0B0D10] from-5% via-transparent to-transparent h-full w-full"></div>
+  </motion.div>
 </div>
-
-            <motion.div 
-               initial={{ opacity: 0, rotateX: 25, y: 100, scale: 0.9 }} // Start tilted back
-               whileInView={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }} // Animate to flat
-               viewport={{ once: true, margin: "-100px" }} // Trigger earlier
-               transition={{ 
-                 duration: 1.4, 
-                 type: "spring", 
-                 bounce: 0.1, 
-                 damping: 20 
-               }}
-               // Apply the reversed parallax Y and opacity
-               style={{ y, opacity }} 
-               className="relative z-10 rounded-2xl border border-white/10 bg-[#1A1F26]/50 p-2 shadow-2xl backdrop-blur-sm"
-            >
-               <Image 
-                 src="/dashboard-preview.png" 
-                 alt="Ledger Guard Dashboard" 
-                 width={1400} 
-                 height={900}
-                 className="w-full h-auto rounded-xl border border-white/5 shadow-inner"
-                 priority
-               />
-
-               {/* The Bottom Fade Mask */}
-               <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-[#0B0D10] from-5% via-transparent to-transparent h-full w-full"></div>
-            </motion.div>
-          </div>
 
           {/* Metric Boxes */}
           <motion.div 
@@ -338,7 +341,7 @@ export default function LandingPage() {
                 hidden: { opacity: 0, x: 50 },
                 visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, damping: 20 } }
               }}
-              // 🟢 UPDATED: bg-[#050505] and rounded-[32px]
+              //  UPDATED: bg-[#050505] and rounded-[32px]
               className="bg-[#1A1F26] rounded-[32px] rounded-2xl p-8   hover:border-[#B6FF3B]/20 transition-colors group relative overflow-hidden flex flex-col"
             >
               {/* IMAGE CONTAINER */}
@@ -372,7 +375,7 @@ export default function LandingPage() {
                 hidden: { opacity: 0, x: 50 },
                 visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 50, damping: 20 } }
               }}
-              // 🟢 UPDATED: bg-[#050505] and rounded-[32px]
+              //  UPDATED: bg-[#050505] and rounded-[32px]
               className="bg-[#1A1F26] rounded-[32px] rounded-2xl p-8   hover:border-[#B6FF3B]/20 transition-colors group relative overflow-hidden flex flex-col"
             >
               {/* IMAGE CONTAINER */}
@@ -737,11 +740,15 @@ export default function LandingPage() {
             
             {/* --- THE BLACK BLUR FADE --- */}
             {/* Left Fade Mask: WIDE, BLACK, and BLURRED */}
-            <div className="absolute top-0 left-0 w-32 md:w-80 h-full bg-gradient-to-r from-[#0B0D10] via-[#0B0D10] to-transparent z-20 pointer-events-none backdrop-blur-xl"></div>
-            
+<div className="absolute top-0 left-0 w-6 h-full z-20 pointer-events-none 
+    bg-gradient-to-r from-[#050505] via-[#050505]/80 to-transparent 
+    backdrop-blur-[2px]">
+  </div>            
             {/* Right Fade Mask: WIDE, BLACK, and BLURRED */}
-            <div className="absolute top-0 right-0 w-32 md:w-80 h-full bg-gradient-to-l from-[#0B0D10] via-[#0B0D10] to-transparent z-20 pointer-events-none backdrop-blur-xl"></div>
-
+<div className="absolute top-0 right-0 w-5 h-full z-20 pointer-events-none 
+    bg-gradient-to-l from-[#050505] via-[#050505]/80 to-transparent 
+    backdrop-blur-[2px]">
+  </div>
             {/* Container for the two rows with vertical spacing */}
             <div className="flex flex-col space-y-12 ">
               
