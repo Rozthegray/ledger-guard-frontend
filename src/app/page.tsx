@@ -7,7 +7,14 @@ import {
   ShieldCheck, 
   Zap, 
   Menu,
-  Quote
+  Quote,
+  Globe,
+  Clock,
+  CheckCircle2,
+  Briefcase, 
+  Users,
+  ChevronDown,
+  ArrowRight
 } from "lucide-react";
 import { motion, Variants, useScroll, useTransform } from "framer-motion"; 
 import { useState, useRef } from "react";
