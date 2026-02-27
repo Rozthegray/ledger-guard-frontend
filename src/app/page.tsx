@@ -7,20 +7,22 @@ import {
   ShieldCheck, 
   Zap, 
   Menu,
-  Quote,
   Globe,
   Clock,
   CheckCircle2,
   Briefcase, 
   Users,
   ChevronDown,
+  Quote, 
   ArrowRight
 } from "lucide-react";
 import { motion, Variants, useScroll, useTransform } from "framer-motion"; 
 import { useState, useRef } from "react";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 
 // --- ANIMATION VARIANTS ---
+
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: { 
@@ -30,7 +32,26 @@ const fadeInUp: Variants = {
   }
 };
 
+const slideLeft: Variants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: { 
+    opacity: 1, 
+    x: 0, 
+    transition: { duration: 0.8, ease: "easeOut" } 
+  }
+};
+
+const slideRight: Variants = {
+  hidden: { opacity: 0, x: 50 },
+  visible: { 
+    opacity: 1, 
+    x: 0, 
+    transition: { duration: 0.8, ease: "easeOut" } 
+  }
+};
+
 // --- TESTIMONIAL DATA & COMPONENTS ---
+
 const testimonials = [
   {
     quote: "Ledger Guard made my finances feel simple. Everything's in one place.",
@@ -70,15 +91,20 @@ const testimonials = [
   }
 ];
 
+
+
 const ReviewCard = ({ t }: { t: any }) => (
-  <div className="flex-shrink-0 w-[90vw] md:w-[450px] bg-[#1A1F26] rounded-2xl p-8 md:rounded-[32px] flex flex-col justify-between hover:border-[#B6FF3B]/20 transition-colors relative overflow-hidden group h-full shadow-2xl snap-center">
+  <div className="flex-shrink-0 w-[90vw] md:w-[450px] bg-[#1A1F26] rounded-[32px] rounded-2xl p-8 md:rounded-[32px]  flex flex-col justify-between hover:border-[#B6FF3B]/20 transition-colors relative overflow-hidden group h-full shadow-2xl snap-center">
+    
     <div className="absolute -top-10 -right-10 w-24 h-24 md:w-32 md:h-32 bg-[#B6FF3B]/5 rounded-full blur-3xl group-hover:bg-[#B6FF3B]/10 transition-colors"></div>
+
     <div className="relative z-10">
       <Quote className="text-[#B6FF3B]/20 h-6 w-6 md:h-8 md:w-8 mb-4 md:mb-6 fill-current" />
       <p className="text-slate-200 text-base md:text-lg font-medium leading-relaxed">
         "{t.quote}"
       </p>
     </div>
+
     <div className="flex items-center gap-4 mt-6 md:mt-8 relative z-10">
       <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-slate-700 overflow-hidden border border-white/10">
         <img src={t.img} alt={t.author} className="w-full h-full object-cover" />
@@ -91,7 +117,29 @@ const ReviewCard = ({ t }: { t: any }) => (
   </div>
 );
 
+const MarqueeRow = ({ reviews, duration = 40, reverse = false }: { reviews: any[], duration?: number, reverse?: boolean }) => {
+  return (
+    <div className="relative flex overflow-hidden w-full py-4"> 
+      <motion.div
+        initial={{ x: reverse ? "-50%" : "0%" }}
+        animate={{ x: reverse ? "0%" : "-50%" }}
+        transition={{
+          duration: duration,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+        className="flex flex-row gap-6 pr-6" 
+      >
+        {[...reviews, ...reviews].map((t, i) => (
+          <ReviewCard key={i} t={t} />
+        ))}
+      </motion.div>
+    </div>
+  );
+};
+
 // --- MAIN PAGE COMPONENT ---
+
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   
@@ -99,14 +147,23 @@ export default function LandingPage() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
-    offset: ["start start", "end start"], 
+    offset: ["start start", "end start"], // Track from top of screen to bottom of section
   });
   
-  // Parallax Y movement reversed
+  // FIXED: Parallax Y movement reversed. 
+  // As scroll progress goes 0 -> 1, Y goes 0 -> -150px (moves UP)
   const y = useTransform(scrollYProgress, [0, 1], [0, -150]); 
   
-  // Opacity fade out controls BOTH the dashboard image and the neon glow
+  // Opacity fade out on scroll remains the same
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+
+  const toggleFaq = (i: number) => {
+    setOpenFaq(openFaq === i ? null : i);
+  };
+
+  const row1 = testimonials;
+  const row2 = [...testimonials].reverse(); 
 
   return (
     <div className="min-h-screen bg-[#0B0D10] text-[#E9EEF5] font-sans selection:bg-[#B6FF3B] selection:text-black overflow-x-hidden">
@@ -173,7 +230,7 @@ export default function LandingPage() {
               Stop guessing your runway. We ingest messy bank statements, audit transactions, and forecast cash flow with 99% AI precision.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-2 mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 pt-2 mb-12">
               <Link href="/dashboard/upload">
                 <Button className="h-14 px-8 bg-[#B6FF3B] text-black hover:bg-[#a2ff00] font-bold text-lg rounded-full w-full sm:w-auto shadow-[0_0_20px_rgba(182,255,59,0.3)] transition-transform hover:scale-105">
                   Start Audit Now
@@ -182,71 +239,21 @@ export default function LandingPage() {
             </div>
           </motion.div>
 
-          {/* DASHBOARD ANIMATION CONTAINER */}
-          <div className="mt-20 md:mt-32 relative max-w-5xl mx-auto" style={{ perspective: "1000px" }}> 
+<div className="mt-32 md:mt-40 relative max-w-5xl mx-auto" style={{ perspective: "100px" }}> 
 
-            {/* --- 1. THE NEON GLOW (Synchronized fading) --- */}
-            <motion.div 
-              style={{ opacity }} 
-              className="absolute top-10 left-1/2 -translate-x-1/2 w-full flex justify-center z-0 pointer-events-none"
-            >
-              <div className="absolute -top-10 w-[60%] h-[60px] bg-[#B6FF3B]/20 blur-[80px] rounded-t-full"></div>
-              <div className="absolute -top-16 w-[40%] h-[80px] bg-[#B6FF3B] blur-[90px] rounded-t-full opacity-50 mix-blend-screen"></div>
-            </motion.div>
+  {/* --- 1. THE NEON GLOW (Now synchronized) --- */}
+  {/* CHANGE: Converted to motion.div and added style={{ opacity }} */}
+  <motion.div 
+    style={{ opacity }} 
+    className="absolute top-10 left-1/2 -translate-x-1/2 w-full flex justify-center z-0 pointer-events-none"
+  >
+    {/* Layer 1: The Atmosphere */}
+    <div className="absolute -top-10 w-[60%] h-[60px] bg-[#B6FF3B]/20 blur-[80px] rounded-t-full"></div>
+    
+    {/* Layer 2: The Core */}
+    <div className="absolute -top-16 w-[40%] h-[80px] bg-[#B6FF3B] blur-[90px] rounded-t-full opacity-50 mix-blend-screen"></div>
+  </motion.div>
 
-            {/* --- 2. THE DASHBOARD IMAGE (Tilt-up reveal) --- */}
-            <motion.div 
-               initial={{ opacity: 0, rotateX: 25, y: 100, scale: 0.9 }} 
-               whileInView={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }} 
-               viewport={{ once: true, margin: "-100px" }} 
-               transition={{ 
-                 duration: 1.4, 
-                 type: "spring", 
-                 bounce: 0.1, 
-                 damping: 20 
-               }}
-               style={{ y, opacity }} 
-               className="relative z-10 rounded-2xl border border-white/10 bg-[#1A1F26]/50 p-2 shadow-2xl backdrop-blur-sm"
-            >
-               <Image 
-                 src="/dashboard-preview.png" 
-                 alt="Ledger Guard Dashboard" 
-                 width={1400} 
-                 height={900}
-                 className="w-full h-auto rounded-xl border border-white/5 shadow-inner"
-                 priority
-               />
-
-               {/* The Bottom Fade Mask */}
-               <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-[#0B0D10] from-[2%] via-transparent to-transparent h-full w-full rounded-xl"></div>
-            </motion.div>
-          </div>
-
-          {/* Metric Boxes */}
-          <motion.div 
-            initial="hidden"
-            whileInView="visible"
-            variants={fadeInUp}
-            className="grid md:grid-cols-3 gap-6 pt-20 border-t border-white/10 mt-20"
-          >
-             <div className="bg-[#1A1F26] p-6 rounded-xl flex flex-col items-center text-center hover:border-[#B6FF3B]/50 transition-colors">
-                <p className="text-slate-400 text-sm uppercase tracking-wider mb-2 text-white">AI Precision</p>
-                <h3 className="text-3xl font-bold text-[#B6FF3B]">99.8%</h3>
-                <p className="text-xs text-slate-500 mt-2 text-white">Accuracy in Anomaly Detection</p>
-             </div>
-             <div className="bg-[#1A1F26] p-6 rounded-xl flex flex-col items-center text-center hover:border-[#B6FF3B]/50 transition-colors">
-                <p className="text-slate-400 text-sm uppercase tracking-wider mb-2 text-white">Processing Speed</p>
-                <h3 className="text-3xl font-bold text-[#B6FF3B]">70%</h3>
-                <p className="text-xs text-slate-500 mt-2 text-white">Faster than Manual Audits</p>
-             </div>
-             <div className="bg-[#1A1F26] p-6 rounded-xl flex flex-col items-center text-center hover:border-[#B6FF3B]/50 transition-colors">
-                <p className="text-slate-400 text-sm uppercase tracking-wider mb-2 text-white">Compliance Tracking</p>
-                <h3 className="text-3xl font-bold text-[#B6FF3B]">100%</h3>
-                <p className="text-xs text-slate-500 mt-2 text-white">Audit Log Retention</p>
-             </div>
-          </motion.div>
-        </div>
-      </section>
       
      {/* 2.5 HOW IT WORKS (Updated BG #050505 & Radius) */}
       <section className="py-24 bg-[#0B0D10] relative overflow-hidden">
