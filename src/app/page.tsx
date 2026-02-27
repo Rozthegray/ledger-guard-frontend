@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { Button } from "@/components/ui/button";
 import { 
   ShieldCheck, 
@@ -203,6 +204,7 @@ export default function LandingPage() {
       <SiteHeader />
 
       {/* 2. HERO SECTION */}
+    {/* 2. HERO SECTION */}
       <section className="relative pt-32 pb-20 overflow-hidden" ref={heroRef}>
         <div className="container mx-auto px-6">
           
@@ -230,7 +232,7 @@ export default function LandingPage() {
               Stop guessing your runway. We ingest messy bank statements, audit transactions, and forecast cash flow with 99% AI precision.
             </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-2 mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 pt-2 mb-12">
               <Link href="/dashboard/upload">
                 <Button className="h-14 px-8 bg-[#B6FF3B] text-black hover:bg-[#a2ff00] font-bold text-lg rounded-full w-full sm:w-auto shadow-[0_0_20px_rgba(182,255,59,0.3)] transition-transform hover:scale-105">
                   Start Audit Now
@@ -239,49 +241,38 @@ export default function LandingPage() {
             </div>
           </motion.div>
 
-<div className="mt-32 md:mt-40 relative max-w-5xl mx-auto" style={{ perspective: "100px" }}> 
+          {/* 3D DASHBOARD ANIMATION */}
+          {/* Note the negative margin pulls the 3D element closer to your text */}
+          <div className="mt-[-80px] md:mt-[-120px] relative w-full flex justify-center">
+            <ContainerScroll titleComponent={null}>
+              
+              {/* THE NEON GLOW (Synchronized to fade on scroll) */}
+              <motion.div 
+                style={{ opacity }} 
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-full flex justify-center z-0 pointer-events-none"
+              >
+                {/* Layer 1: The Atmosphere */}
+                <div className="absolute -top-10 w-[60%] h-[60px] bg-[#B6FF3B]/20 blur-[80px] rounded-t-full"></div>
+                {/* Layer 2: The Core */}
+                <div className="absolute -top-16 w-[40%] h-[80px] bg-[#B6FF3B] blur-[90px] rounded-t-full opacity-50 mix-blend-screen"></div>
+              </motion.div>
 
-  {/* --- 1. THE NEON GLOW (Now synchronized) --- */}
-  {/* CHANGE: Converted to motion.div and added style={{ opacity }} */}
-  <motion.div 
-    style={{ opacity }} 
-    className="absolute top-10 left-1/2 -translate-x-1/2 w-full flex justify-center z-0 pointer-events-none"
-  >
-    {/* Layer 1: The Atmosphere */}
-    <div className="absolute -top-10 w-[60%] h-[60px] bg-[#B6FF3B]/20 blur-[80px] rounded-t-full"></div>
-    
-    {/* Layer 2: The Core */}
-    <div className="absolute -top-16 w-[40%] h-[80px] bg-[#B6FF3B] blur-[90px] rounded-t-full opacity-50 mix-blend-screen"></div>
-  </motion.div>
+              {/* THE DASHBOARD IMAGE */}
+              <Image 
+                src="/dashboard-preview.png" 
+                alt="Ledger Guard Dashboard" 
+                width={1400} 
+                height={900}
+                className="w-full h-full object-cover object-left-top rounded-xl"
+                priority
+                draggable={false}
+              />
 
-  {/* --- 2. THE DASHBOARD IMAGE --- */}
-  <motion.div 
-     initial={{ opacity: 0, rotateX: 25, y: 100, scale: 0.9 }} 
-     whileInView={{ opacity: 1, rotateX: 0, y: 50, scale: 1 }} 
-     viewport={{ once: true, margin: "-100px" }} 
-     transition={{ 
-       duration: 1.4, 
-       type: "spring", 
-       bounce: 0.1, 
-       damping: 20 
-     }}
-     // This opacity value now controls BOTH the image and the glow above
-     style={{ y, opacity }} 
-     className="relative z-10 rounded-2xl border border-white/10 bg-[#1A1F26]/50 p-2 shadow-2xl backdrop-blur-sm"
-  >
-     <Image 
-       src="/dashboard-preview.png" 
-       alt="Ledger Guard Dashboard" 
-       width={1400} 
-       height={900}
-       className="w-full h-auto rounded-xl border border-white/5 shadow-inner"
-       priority
-     />
-
-     {/* The Bottom Fade Mask */}
-     <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-[#0B0D10] from-5% via-transparent to-transparent h-full w-full"></div>
-  </motion.div>
-</div>
+              {/* THE BOTTOM FADE MASK */}
+              <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-[#0B0D10] from-[2%] via-transparent to-transparent h-full w-full rounded-xl"></div>
+            
+            </ContainerScroll>
+          </div>
 
           {/* Metric Boxes */}
           <motion.div 
