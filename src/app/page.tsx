@@ -254,7 +254,61 @@ export default function LandingPage() {
     <div className="absolute -top-16 w-[40%] h-[80px] bg-[#B6FF3B] blur-[90px] rounded-t-full opacity-50 mix-blend-screen"></div>
   </motion.div>
 
-      
+  {/* --- 2. THE DASHBOARD IMAGE --- */}
+  <motion.div 
+     initial={{ opacity: 0, rotateX: 25, y: 100, scale: 0.9 }} 
+     whileInView={{ opacity: 1, rotateX: 0, y: 50, scale: 1 }} 
+     viewport={{ once: true, margin: "-100px" }} 
+     transition={{ 
+       duration: 1.4, 
+       type: "spring", 
+       bounce: 0.1, 
+       damping: 20 
+     }}
+     // This opacity value now controls BOTH the image and the glow above
+     style={{ y, opacity }} 
+     className="relative z-10 rounded-2xl border border-white/10 bg-[#1A1F26]/50 p-2 shadow-2xl backdrop-blur-sm"
+  >
+     <Image 
+       src="/dashboard-preview.png" 
+       alt="Ledger Guard Dashboard" 
+       width={1400} 
+       height={900}
+       className="w-full h-auto rounded-xl border border-white/5 shadow-inner"
+       priority
+     />
+
+     {/* The Bottom Fade Mask */}
+     <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-[#0B0D10] from-5% via-transparent to-transparent h-full w-full"></div>
+  </motion.div>
+</div>
+
+          {/* Metric Boxes */}
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            variants={fadeInUp}
+            className="grid md:grid-cols-3 gap-6 pt-20 border-t border-white/10 mt-20"
+          >
+             <div className="bg-[#1A1F26] p-6 rounded-xl flex flex-col items-center text-center hover:border-[#B6FF3B]/50 transition-colors">
+                <p className="text-slate-400 text-sm uppercase tracking-wider mb-2 text-white">AI Precision</p>
+                <h3 className="text-3xl font-bold text-[#B6FF3B]">99.8%</h3>
+                <p className="text-xs text-slate-500 mt-2 text-white">Accuracy in Anomaly Detection</p>
+             </div>
+             <div className="bg-[#1A1F26] p-6 rounded-xl flex flex-col items-center text-center hover:border-[#B6FF3B]/50 transition-colors">
+                <p className="text-slate-400 text-sm uppercase tracking-wider mb-2 text-white">Processing Speed</p>
+                <h3 className="text-3xl font-bold text-[#B6FF3B]">70%</h3>
+                <p className="text-xs text-slate-500 mt-2 text-white">Faster than Manual Audits</p>
+             </div>
+             <div className="bg-[#1A1F26] p-6 rounded-xl flex flex-col items-center text-center hover:border-[#B6FF3B]/50 transition-colors">
+                <p className="text-slate-400 text-sm uppercase tracking-wider mb-2 text-white">Compliance Tracking</p>
+                <h3 className="text-3xl font-bold text-[#B6FF3B]">100%</h3>
+                <p className="text-xs text-slate-500 mt-2 text-white">Audit Log Retention</p>
+             </div>
+          </motion.div>
+        </div>
+      </section>
+
      {/* 2.5 HOW IT WORKS (Updated BG #050505 & Radius) */}
       <section className="py-24 bg-[#0B0D10] relative overflow-hidden">
         <div className="container mx-auto px-6">
