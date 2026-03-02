@@ -43,7 +43,7 @@ export function Sidebar({ className, onClose, user }: SidebarProps) {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    router.push("/auth/login");
+    router.push("/login");
   };
 
   return (
