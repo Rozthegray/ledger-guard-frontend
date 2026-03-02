@@ -39,7 +39,7 @@ export default function LoginPage() {
       // 2. Dispatch event (helps sync state, though reload makes it redundant)
       window.dispatchEvent(new Event("storage"));
 
-      // 🟢 3. FIX: Force Hard Reload
+      // 3. FIX: Force Hard Reload
       // This is the only way to guarantee the API client picks up the new token
       // immediately and stops the 401 loop.
       window.location.href = "/dashboard";
@@ -89,7 +89,7 @@ export default function LoginPage() {
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <label className="text-xs font-medium text-slate-400">Password</label>
-            <Link href="/auth/forgot-password" className="text-xs text-[#B6FF3B] hover:underline">Forgot password?</Link>
+            <Link href="/forgot-password" className="text-xs text-[#B6FF3B] hover:underline">Forgot password?</Link>
           </div>
           <div className="relative">
             <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
