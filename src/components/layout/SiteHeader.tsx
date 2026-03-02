@@ -174,14 +174,18 @@ export function SiteHeader() {
               </div>
             </div>
 
-            <div className="pt-6 border-t border-white/10 space-y-3">
-              <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline" className="w-full h-12 border-white/10 text-black hover:bg-white/5 text-lg">Log In</Button>
-              </Link>
-              <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
-                <Button className="w-full h-12 bg-[#B6FF3B] text-black hover:bg-[#a2ff00] font-bold text-lg">Get Started</Button>
-              </Link>
-            </div>
+            <div className="pt-6 border-t border-white/10 flex flex-col gap-3">
+  <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="block">
+    <Button variant="outline" className="w-full h-12 border-white/10 text-black hover:bg-white/5 text-lg">
+      Log In
+    </Button>
+  </Link>
+  <Link href="/signup" onClick={() => setMobileMenuOpen(false)} className="block">
+    <Button className="w-full h-12 bg-[#B6FF3B] text-black hover:bg-[#a2ff00] font-bold text-lg">
+      Get Started
+    </Button>
+  </Link>
+</div>
           </motion.div>
         )}
       </AnimatePresence>
